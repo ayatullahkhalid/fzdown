@@ -48,7 +48,7 @@ export default function Series () {
               </EmptyHeader>
             </Empty>
           ) : results.length === 0 ? (
-              <Empty className="w-full absolute z-49 bg-background">
+              <Empty className="w-full bg-background">
                 <EmptyHeader>
                   <EmptyMedia variant="icon" className="bg-transparent">
                     <XCircleIcon />
