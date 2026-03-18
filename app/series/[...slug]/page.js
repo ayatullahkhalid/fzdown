@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { Spinner } from "@/components/ui/spinner"
+import { XCircleIcon } from '@phosphor-icons/react';
 
 export default function Show ({ params }) {
 
