@@ -3,9 +3,8 @@ import React from 'react'
 
 const Home = async () => {
   const scraper = new Scraper()
-  const seasonData = await scraper.search("hello", "movies")
   
-  //await scraper.getEpisodes(await scraper.getEpisodeList("files-One_Piece--2830.htm"), scraper.baseSeriesURL)
+  const seasonData = await scraper.getEpisodes(await scraper.getEpisodeList("files-One_Piece--2830.htm"), scraper.baseSeriesURL)
 
   return (
     <div>
