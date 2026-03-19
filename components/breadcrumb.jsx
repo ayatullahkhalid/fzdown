@@ -16,7 +16,7 @@ const formatName = (path) => {
     .replace(/\.htm$/i, "")
     .replace(/-/g, " ")
     .trim()
-    .toLowercase()
+    .toLowerCase()
 }
 
 const BreadcrumbMain = () => {
