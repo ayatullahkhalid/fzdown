@@ -11,6 +11,7 @@ import { XCircleIcon } from '@phosphor-icons/react';
 export default function Show ({ params }) {
   const pathname = usePathname()
   const slug = pathname.replace(/^\/series\//, "")
+  const slugText = decodeURIComponent(slug).replace("subfolder-").replace(".htm")
   const [show, setShow] = useState({})
   const [loading, setLoading] = useState(false)
   
@@ -47,7 +48,7 @@ export default function Show ({ params }) {
                 <EmptyMedia variant="icon" className="bg-transparent">
                   <Spinner className="bg-none"/>
                 </EmptyMedia>
-                <EmptyTitle>Loading {pathname}</EmptyTitle>
+                <EmptyTitle>Loading {slugText}</EmptyTitle>
                 <EmptyDescription>
                   We'll get the data for you in a jiffy
                 </EmptyDescription>
@@ -61,8 +62,8 @@ export default function Show ({ params }) {
                 </EmptyMedia>
                 <EmptyTitle>A problem occurred</EmptyTitle>
                 <EmptyDescription>
-                  We couldn't extract the show {slug} for you <br/>
-                  Check your internet connection or try again later {pathname}
+                  We couldn't extract the show {slugText} for you <br/>
+                  Check your internet connection or try again later
                 </EmptyDescription>
               </EmptyHeader>
             </Empty>
