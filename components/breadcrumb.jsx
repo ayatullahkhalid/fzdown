@@ -10,6 +10,14 @@ import {
 import { usePathname } from "next/navigation"
 import React from "react"
 
+const formatName = (path) => {
+  return decodeURIComponent(path)
+    .replace(/subfolder-|files-/g, "")
+    .replace(/\.htm$/i, "")
+    .replace(/-/g, " ")
+    .trim()
+}
+
 const BreadcrumbMain = () => {
   const pathname = usePathname()
   const paths = pathname.split("/").filter(path => path.length > 0)
@@ -19,7 +27,7 @@ const BreadcrumbMain = () => {
   paths.forEach((path) => {
     href += `/${path}`
     bc.push({
-      name: path.charAt(0).toLowerCase() + path.slice(1).replace(/-/g, " "),
+      name: formatName(path),
       href: href,
     })
   })
