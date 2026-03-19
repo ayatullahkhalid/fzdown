@@ -9,7 +9,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { XCircleIcon } from '@phosphor-icons/react';
 
 export default function Show ({ params }) {
-  const pathname = new newPathName()
+  const pathname = usePathname()
   const [show, setShow] = useState({})
   const [loading, setLoading] = useState(false)
   
@@ -30,9 +30,7 @@ export default function Show ({ params }) {
 
   useEffect(() => {
     if(!pathname) return
-    let path = pathname.replace(\^/series\//, pathname)
-    //path = decodeURIComponent(path)
-    const slug = path
+    let slug = decodeURIComponent(pathname.replace(/^\/series\//, ""))
     fetchData()
   }, [])
 
