@@ -7,6 +7,7 @@ export async function GET(req) {
 
     return Response.json({ results })
   } catch (err) {
+      console.log(err)
     return Response.json({ results: [] }, { status: 500 })
   }
 }
