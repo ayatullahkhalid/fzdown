@@ -4,7 +4,7 @@ export async function GET(req, {params}) {
   const { show } = params
   
   if (!show) {
-    return Response.json({ show: [] })
+    return Response.json({ show: null })
   }
 
   try {
