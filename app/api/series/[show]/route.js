@@ -15,6 +15,6 @@ export async function GET(req) {
 
     return Response.json({ show : result })
   } catch (err) {
-    return Response.json({ show: [] }, { status: 500 })
+    return Response.json({ message: err.message, stack: err.stack }, { status: 500 })
   }
 }
