@@ -11,7 +11,7 @@ import { XCircleIcon } from '@phosphor-icons/react';
 export default function Show ({ params }) {
   const pathname = usePathname()
   const slug = pathname.replace(/^\/series\//, "")
-  const slugText = decodeURIComponent(slug).replace("subfolder-").replace(".htm")
+  const slugText = decodeURIComponent(slug).replace("subfolder-", "").replace(".htm", "")
   const [show, setShow] = useState({})
   const [loading, setLoading] = useState(false)
   
