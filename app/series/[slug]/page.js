@@ -111,7 +111,7 @@ export default function Show () {
                   <Button asChild variant="outline" size="xs"><Link href="/">Download</Link></Button>
                 </span>
               </div>
-            )}
+            ))}
           </CardContent>
 
                     </Card>
@@ -119,7 +119,7 @@ export default function Show () {
                 ))}
               </Tabs>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>
