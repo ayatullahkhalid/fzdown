@@ -47,7 +47,7 @@ export default function Show ({ params }) {
                 <EmptyMedia variant="icon" className="bg-transparent">
                   <Spinner className="bg-none"/>
                 </EmptyMedia>
-                <EmptyTitle>Loading {slug}</EmptyTitle>
+                <EmptyTitle>Loading {pathname}</EmptyTitle>
                 <EmptyDescription>
                   We'll get the data for you in a jiffy
                 </EmptyDescription>
