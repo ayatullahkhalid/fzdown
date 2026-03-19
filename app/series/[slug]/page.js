@@ -76,9 +76,9 @@ export default function Show ({ params }) {
               <span>genres: {genres?.join(", ")}</span>
 
               <Tabs defaultValue={seasons?.[0]?.link || ""} className="w-full">
-                <TabsList className="w-full overflow-x-scroll" variant="line">
+                <TabsList className="w-full overflow-x-auto no-scrollbar" variant="line">
                   {seasons?.map(({ title, link }) => (
-                    <TabsTrigger key={link} value={link}>
+                    <TabsTrigger key={link} value={link} className="whitespace-nowrap flex-shrink-0">
                       {title}
                     </TabsTrigger>
                   ))}
