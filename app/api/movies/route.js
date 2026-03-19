@@ -8,6 +8,10 @@ export async function GET(req) {
     return Response.json({ results })
   } catch (err) {
       console.error("Error: ", err)
-    return Response.json({ results: [] }, { status: 501 })
+    return Response.json({
+    sucess: false,
+    message: err.message,
+    stack: err.stack,
+    }, { status: 500 })
   }
 }
