@@ -7,6 +7,7 @@ import Link from "next/link"
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { Spinner } from "@/components/ui/spinner"
 import { XCircleIcon } from '@phosphor-icons/react';
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function Show ({ params }) {
   const pathname = usePathname()
@@ -73,14 +74,15 @@ export default function Show ({ params }) {
               <span>{desc}</span>
               <span>aired: {running}, seasons: {seasons?.length}</span>
               <span>genres: {genres?.join(", ")}</span>
-              <div className="flex flex-col gap-2 pl-2">
-                <span className="font-bold">Seasons</span>
-                {seasons?.map(({ title, link }) => (
-                  <Link key={link} href={`/series/${slug}/${link}`}>
-                    {title}
-                  </Link>
+              <Tabs defaultValue={seasons?.[0]?.title || ""}>
+                <TabsList variant="line">
+    {seasons?.map(({ title, link }) => (
+                  <TabsTrigger key={link} value={title}>{title}</TabsTrigger>
                 ))}
-              </div>
+                </TabsList>
+              </Tabs>
+  )
+}
             </div>
           )}
         </div>
