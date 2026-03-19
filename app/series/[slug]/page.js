@@ -9,11 +9,12 @@ import { Spinner } from "@/components/ui/spinner"
 import { XCircleIcon } from '@phosphor-icons/react';
 
 export default function Show ({ params }) {
-  const { slug } = params
+  const pathname = new newPathName()
   const [show, setShow] = useState({})
   const [loading, setLoading] = useState(false)
-
+  
   const fetchData = async () => {
+    
     try {
       setLoading(true)
       const res = await fetch(`/api/series/${slug}`)
@@ -28,6 +29,10 @@ export default function Show ({ params }) {
   }
 
   useEffect(() => {
+    if(!pathname) return
+    let path = pathname.replace(\^/series\//, pathname)
+    //path = decodeURIComponent(path)
+    const slug = path
     fetchData()
   }, [])
 
