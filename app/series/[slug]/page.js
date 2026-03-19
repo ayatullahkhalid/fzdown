@@ -10,7 +10,7 @@ import { XCircleIcon } from '@phosphor-icons/react';
 
 export default function Show ({ params }) {
   const pathname = usePathname()
-  const slug = decodeURIComponent(pathname.replace(/^\/series\//, ""))
+  const slug = pathname.replace(/^\/series\//, "")
   const [show, setShow] = useState({})
   const [loading, setLoading] = useState(false)
   
@@ -30,7 +30,7 @@ export default function Show ({ params }) {
   }
 
   useEffect(() => {
-    if(!pathname) return
+    if(!slug) return
     fetchData()
   }, [])
 
