@@ -104,7 +104,7 @@ export default function Show () {
               <div className="flex flex-col gap-2">
                 <span className="font-bold lowercase">Title Here</span>
                 <span className="lowercase">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere sagittis risus a aliquet. Praesent nec semper tellus, sit amet mattis tellus. Donec ultrices, nisi vitae sollicitudin vulputate.</span>
-                <span className="flex">mp4: 
+                <span className="flex gap-2">mp4: 
                   <Button variant="outline" size="xs">
                     <CopyIcon />
                   </Button>
