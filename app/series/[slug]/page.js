@@ -96,9 +96,6 @@ export default function Show () {
                 {seasons?.map(({ title, link }) => (
                   <TabsContent key={link} value={link}>
                     <Card className="px-2">
-                      <CardHeader>
-            <CardTitle>{title}</CardTitle>
-          </CardHeader>
           <CardContent className="flex flex-col gap-2">
             {Array.from({ length: 6 }).map((_, i) => (
               <div className="flex flex-col gap-2">
@@ -108,16 +105,17 @@ export default function Show () {
                   <Button variant="outline" size="xs">
                     <CopyIcon />
                   </Button>
-                  <Button asChild variant="outline" size="xs"><Link href="/">Download</Link></Button>
+                  <Button asChild variant="outline" size="xs" className="bg-transparent"><Link href="/">Download</Link></Button>
                 webm: 
                   <Button variant="outline" size="xs">
                     <CopyIcon />
                   </Button>
-                  <Button asChild variant="outline" size="xs"><Link href="/">Download</Link></Button>
+                  <Button asChild variant="outline" size="xs" className="bg-transparent"><Link href="/">Download</Link></Button>
                 </span>
               </div>
             ))}
           </CardContent>
+          <Separator />
 
                     </Card>
                   </TabsContent>
