@@ -44,7 +44,7 @@ export default function Show ({ params }) {
                 <EmptyMedia variant="icon" className="bg-transparent">
                   <Spinner className="bg-none"/>
                 </EmptyMedia>
-                <EmptyTitle>Loading Show</EmptyTitle>
+                <EmptyTitle>Loading {slug}</EmptyTitle>
                 <EmptyDescription>
                   We'll get the data for you in a jiffy
                 </EmptyDescription>
@@ -58,7 +58,7 @@ export default function Show ({ params }) {
                 </EmptyMedia>
                 <EmptyTitle>A problem occurred</EmptyTitle>
                 <EmptyDescription>
-                  We couldn't extract the show for you <br/>
+                  We couldn't extract the show {slug} for you <br/>
                   Check your internet connection or try again later
                 </EmptyDescription>
               </EmptyHeader>

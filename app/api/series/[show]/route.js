@@ -1,6 +1,6 @@
 import Scraper from "@/lib/scraper"
 
-export async function GET(req, {params}) {
+export async function GET(req, { params }) {
   const { show } = params
   
   if (!show) {
