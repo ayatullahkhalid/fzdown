@@ -74,15 +74,16 @@ export default function Show ({ params }) {
               <span>{desc}</span>
               <span>aired: {running}, seasons: {seasons?.length}</span>
               <span>genres: {genres?.join(", ")}</span>
-              <Tabs defaultValue={seasons?.[0]?.title || ""}>
+
+              <Tabs defaultValue={seasons?.[0]?.link || ""}>
                 <TabsList variant="line">
-    {seasons?.map(({ title, link }) => (
-                  <TabsTrigger key={link} value={title}>{title}</TabsTrigger>
-                ))}
+                  {seasons?.map(({ title, link }) => (
+                    <TabsTrigger key={link} value={link}>
+                      {title}
+                    </TabsTrigger>
+                  ))}
                 </TabsList>
               </Tabs>
-  )
-}
             </div>
           )}
         </div>
