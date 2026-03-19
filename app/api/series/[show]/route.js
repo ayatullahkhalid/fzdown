@@ -2,7 +2,8 @@ import Scraper from "@/lib/scraper"
 import { usePathname } from "next/navigation"
 
 export async function GET(req) {
-  const pathname = usePathname()
+  const url = new URL(req.url)
+  const pathname = url.pathname
   const show = pathname.replace(/^\/series\//, "")
   
   if (!show) {
