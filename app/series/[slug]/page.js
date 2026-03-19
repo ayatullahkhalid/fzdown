@@ -54,7 +54,7 @@ export default function Show () {
       <div className="w-full py-2 px-2 br-2">
         <div className="results">
           {loading ? (
-            <Empty theclassName="w-full bg-background">
+            <Empty className="w-full bg-background">
               <EmptyHeader>
                 <EmptyMedia variant="icon" className="bg-transparent">
                   <Spinner className="bg-none"/>
@@ -102,8 +102,8 @@ export default function Show () {
           <CardContent className="flex flex-col gap-2">
             {Array.from({ length: 6 }).map((_, i) => (
               <div className="flex flex-col gap-2">
-                <span className="font-bold text-lowercase">Title Here</span>
-                <span className="text-lowercase">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere sagittis risus a aliquet. Praesent nec semper tellus, sit amet mattis tellus. Donec ultrices, nisi vitae sollicitudin vulputate.</span>
+                <span className="font-bold lowercase">Title Here</span>
+                <span className="lowercase">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere sagittis risus a aliquet. Praesent nec semper tellus, sit amet mattis tellus. Donec ultrices, nisi vitae sollicitudin vulputate.</span>
                 <span className="flex">mp4: 
                   <Button variant="outline" size="icon">
                     <CopyIcon />
@@ -119,7 +119,7 @@ export default function Show () {
                 ))}
               </Tabs>
             </div>
-          )}
+          ))}
         </div>
       </div>
     </div>
