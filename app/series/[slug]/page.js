@@ -61,8 +61,8 @@ export default function Show ({ params }) {
                 </EmptyMedia>
                 <EmptyTitle>A problem occurred</EmptyTitle>
                 <EmptyDescription>
-                  We couldn't extract the show {params.slug} for you <br/>
-                  Check your internet connection or try again later
+                  We couldn't extract the show {slug} for you <br/>
+                  Check your internet connection or try again later {pathname}
                 </EmptyDescription>
               </EmptyHeader>
             </Empty>
