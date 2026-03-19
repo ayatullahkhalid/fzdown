@@ -42,7 +42,7 @@ export default function Show ({ params }) {
       <div className="w-full py-2 px-2 br-2">
         <div className="results">
           {loading ? (
-            <Empty className="w-full">
+            <Empty className="w-full bg-background">
               <EmptyHeader>
                 <EmptyMedia variant="icon" className="bg-transparent">
                   <Spinner className="bg-none"/>
@@ -54,7 +54,7 @@ export default function Show ({ params }) {
               </EmptyHeader>
             </Empty>
           ) : !show.title ? (
-            <Empty className="w-full absolute z-49 bg-background">
+            <Empty className="w-full bg-background">
               <EmptyHeader>
                 <EmptyMedia variant="icon" className="bg-transparent">
                   <XCircleIcon />
