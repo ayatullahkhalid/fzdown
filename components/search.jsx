@@ -60,7 +60,7 @@ const SearchBar = () => {
       setLoading(true)
 
       if (isSeries || isMovie) {
-        const res = await fetch(`/api/search?q=${debQuery}&type=${searchType}`)
+        const res = await fetch(`/api/search/${searchType}/${debQuery}`)
         const data = await res.json()
         setResults(data.results || [])
       }

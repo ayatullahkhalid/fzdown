@@ -1,10 +1,8 @@
 import Scraper from "@/lib/scraper"
 
-export async function GET(req) {
-  const { searchParams } = new URL(req.url)
-
-  const query = searchParams.get("q")
-  const type = searchParams.get("type") || "series"
+export async function GET(req, { params }) {
+  const { type, query } = params
+  console.log(query)
 
   if (!query) {
     return Response.json({ results: [] })
