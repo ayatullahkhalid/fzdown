@@ -9,7 +9,9 @@ const Home = async () => {
   return (
     <div>
 <pre className="bg-black text-green-400 p-3 rounded max-h-96 overflow-auto text-xs">
-  {//JSON.stringify(seasonData, null, 2)}
+  {
+  //JSON.stringify(seasonData, null, 2)
+  }
 </pre>
     </div>
   )
