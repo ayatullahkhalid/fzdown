@@ -2,10 +2,10 @@ import Scraper from "@/lib/scraper"
 
 export async function GET(req, { params }) {
   const { type, query } = params
-  console.log(query)
+  console.log(params)
 
   if (!query) {
-    return Response.json({ results: [] })
+    return Response.json({ params })
   }
 
   try {
