@@ -6,7 +6,7 @@ export async function GET(req) {
 const pathname = url.pathname
 const parts = pathname.split("/").filter(Boolean)
 
-const season = parts[2]
+const season = parts[3]
 
 const start = url.searchParams.get("start")
 const end = url.searchParams.get("end")
