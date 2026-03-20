@@ -187,7 +187,7 @@ export default function Show() {
               >
                 <TabsList
                   ref={listRef}
-                  className="w-full overflow-x-auto no-scrollbar"
+                  className="w-full overflow-x-auto overflow-y-hidden no-scrollbar"
                   variant="line"
                 >
                   {seasons?.map(({ title: seasonTitle, link }) => (
