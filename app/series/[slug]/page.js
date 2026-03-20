@@ -23,6 +23,7 @@ export default function Show() {
   const slugText = decodeURIComponent(slug)
     .replace("subfolder-", "")
     .replace(".htm", "")
+    .replace("_", "")
   const [show, setShow] = useState({})
   const [loading, setLoading] = useState(false)
   const [activeTab, setActiveTab] = useState("")
@@ -45,50 +46,62 @@ export default function Show() {
     }
   }
 
-  const fetchEpisodes = useCallback(async (link, loadMore = false) => {
-    const PAGE_SIZE = 5
-    setLoadingTab(link)
-    
-    setEpisodesMap(prev => {
-      const current = prev[link] || { episodes: [], start: 1, hasMore: true, loading: false }
-      if (current.loading) return prev
-      return { ...prev, [link]: { ...current, loading: true } }
-    })
+  const fetchEpisodes = useCallback(
+    async (link, loadMore = false) => {
+      const PAGE_SIZE = 5
+      setLoadingTab(link)
 
-    const currentData = episodesRef.current[link] || { episodes: [] }
-    const start = loadMore ? currentData.episodes.length + 1 : 1
-    const end = start + PAGE_SIZE - 1
-
-    try {
-      const res = await fetch(`/api/series/${slug}/${link}?start=${start}&end=${end}`)
-      console.log(`/api/series/${slug}/${link}?start=${start}&end=${end}`)
-      const data = await res.json()
-
-      setEpisodesMap(prev => {
-        const existing = prev[link]?.episodes || []
-        const newEpisodes = loadMore ? [...existing, ...data.eps] : data.eps
-        const updated = {
-          ...prev,
-          [link]: {
-            episodes: newEpisodes,
-            start: newEpisodes.length + 1,
-            hasMore: newEpisodes.length < data.count,
-            loading: false,
-          },
+      setEpisodesMap((prev) => {
+        const current = prev[link] || {
+          episodes: [],
+          start: 1,
+          hasMore: true,
+          loading: false,
         }
-        episodesRef.current = updated // Sync ref
-        return updated
+        if (current.loading) return prev
+        return { ...prev, [link]: { ...current, loading: true } }
       })
-    } catch (err) {
-      console.error(err)
-      setEpisodesMap(prev => ({
-        ...prev,
-        [link]: { ...prev[link], loading: false },
-      }))
-    } finally {
-      setLoadingTab(null)
-    }
-  }, [slug]) // Stable deps
+
+      const currentData = episodesRef.current[link] || { episodes: [] }
+      const start = loadMore ? currentData.episodes.length + 1 : 1
+      const end = start + PAGE_SIZE - 1
+
+      try {
+        const res = await fetch(
+          `/api/series/${slug}/${link}?start=${start}&end=${end}`,
+        )
+        console.log(`/api/series/${slug}/${link}?start=${start}&end=${end}`)
+        const data = await res.json()
+
+        setEpisodesMap((prev) => {
+          const existing = prev[link]?.episodes || []
+          const results = Array.isArray(data.results) ? data.results : []
+
+          const newEpisodes = loadMore ? [...existing, ...results] : results
+          const updated = {
+            ...prev,
+            [link]: {
+              episodes: newEpisodes,
+              start: newEpisodes.length + 1,
+              hasMore: newEpisodes.length < data.count,
+              loading: false,
+            },
+          }
+          episodesRef.current = updated // Sync ref
+          return updated
+        })
+      } catch (err) {
+        console.error(err)
+        setEpisodesMap((prev) => ({
+          ...prev,
+          [link]: { ...prev[link], loading: false },
+        }))
+      } finally {
+        setLoadingTab(null)
+      }
+    },
+    [slug],
+  ) // Stable deps
 
   // Sync episodesRef with episodesMap
   useEffect(() => {
@@ -222,7 +235,8 @@ export default function Show() {
                                   </EmptyMedia>
                                   <EmptyTitle>No episodes found</EmptyTitle>
                                   <EmptyDescription>
-                                    We couldn't extract episodes for this season.
+                                    We couldn't extract episodes for this
+                                    season.
                                   </EmptyDescription>
                                 </EmptyHeader>
                               </Empty>
@@ -240,29 +254,49 @@ export default function Show() {
                                 </span>
                                 <span className="lowercase">{desc}</span>
                                 <div className="flex gap-2 flex-wrap items-center">
-                                  <span>mp4 ({mp4?.size})</span>
-                                  <Button
-                                    variant="outline"
-                                    size="xs"
-                                    onClick={() => copyToClipboard(mp4?.url)}
-                                  >
-                                    <CopyIcon />
-                                  </Button>
-                                  <Button asChild variant="outline" size="xs">
-                                    <Link href={mp4?.url}>Download</Link>
-                                  </Button>
+                                  {mp4 && (
+                                    <>
+                                      <span>mp4 ({mp4?.size})</span>
+                                      <Button
+                                        variant="outline"
+                                        size="xs"
+                                        onClick={() =>
+                                          copyToClipboard(mp4?.url)
+                                        }
+                                      >
+                                        <CopyIcon />
+                                      </Button>
+                                      <Button
+                                        asChild
+                                        variant="outline"
+                                        size="xs"
+                                      >
+                                        <Link href={mp4?.url}>Download</Link>
+                                      </Button>
+                                    </>
+                                  )}
 
-                                  <span>webm ({webm?.size})</span>
-                                  <Button
-                                    variant="outline"
-                                    size="xs"
-                                    onClick={() => copyToClipboard(webm?.url)}
-                                  >
-                                    <CopyIcon />
-                                  </Button>
-                                  <Button asChild variant="outline" size="xs">
-                                    <Link href={webm?.url}>Download</Link>
-                                  </Button>
+                                  {webm && (
+                                    <>
+                                      <span>webm ({webm.size})</span>
+                                      <Button
+                                        variant="outline"
+                                        size="xs"
+                                        onClick={() =>
+                                          copyToClipboard(webm.url)
+                                        }
+                                      >
+                                        <CopyIcon />
+                                      </Button>
+                                      <Button
+                                        asChild
+                                        variant="outline"
+                                        size="xs"
+                                      >
+                                        <Link href={webm.url}>Download</Link>
+                                      </Button>
+                                    </>
+                                  )}
                                 </div>
                               </div>
                             ),
