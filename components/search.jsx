@@ -117,7 +117,7 @@ const SearchBar = () => {
               <div className="w-full">
                 {results.map(({ title, desc, link }) => (
                   <div key={link} className="w-full px-2">
-                    <Link className="flex flex-col gap-2" href={`${searchType}/${link}` || "/"}
+                    <Link className="flex flex-col gap-2" href={`/${searchType}/${link}` || "/"}
                       onMouseDown={(e) => e.preventDefault()}>
                       <span className="font-bold">{title}</span>
                       <span>{desc}</span>
