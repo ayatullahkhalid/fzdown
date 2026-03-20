@@ -18,6 +18,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function Show() {
+  "use cache"
   const pathname = usePathname()
   const slug = pathname.replace(/^\/series\//, "")
   const slugText = decodeURIComponent(slug)
@@ -239,7 +240,7 @@ export default function Show() {
                           }
 
                           return tabData?.episodes?.map(
-                            ({ title, desc, mp4, webm }, i) => (
+                            ({ title, desc, mp4, webm, avi }, i) => (
                               <div
                                 key={`${link}-${i}`}
                                 className="flex flex-col gap-2 p-3 border rounded"
@@ -298,14 +299,18 @@ export default function Show() {
                           )
                         })()}
                         {episodesMap[link]?.hasMore && (
-                          <Button
-                            onClick={() => fetchEpisodes(link, true)}
-                            disabled={episodesMap[link]?.loading}
-                          >
-                            {episodesMap[link]?.loading
-                              ? "Loading..."
-                              : "Load More"}
-                          </Button>
+                          <div className="w-full justify-center align-center flex">
+                            <Button
+                              variant="outline"
+                              size="xs"
+                              onClick={() => fetchEpisodes(link, true)}
+                              disabled={episodesMap[link]?.loading}
+                            >
+                              {episodesMap[link]?.loading
+                                ? "Loading..."
+                                : "Load More"}
+                            </Button>
+                          </div>
                         )}
                       </CardContent>
                       <Separator />
