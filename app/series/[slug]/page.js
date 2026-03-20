@@ -61,6 +61,7 @@ export default function Show() {
 
     try {
       const res = await fetch(`/api/series/${slug}/${link}?start=${start}&end=${end}`)
+      console.log(`/api/series/${slug}/${link}?start=${start}&end=${end}`)
       const data = await res.json()
 
       setEpisodesMap(prev => {
