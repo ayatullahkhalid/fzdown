@@ -30,6 +30,7 @@ export default function Show() {
   const [loadingTab, setLoadingTab] = useState(null)
 
   const listRef = useRef(null)
+  const episodesRef = useRef({}) // Track current episodesMap
 
   const fetchData = async () => {
     try {
@@ -44,71 +45,69 @@ export default function Show() {
     }
   }
 
-  const fetchEpisodes = useCallback(
-    async (link, loadMore = false) => {
-      const PAGE_SIZE = 5
-      setLoadingTab(link)
-      setEpisodesMap((prev) => {
-        const current = prev[link] || {
-          episodes: [],
-          start: 1,
-          hasMore: true,
-          loading: false,
-        }
-        return { ...prev, [link]: { ...current, loading: true } }
-      })
+  const fetchEpisodes = useCallback(async (link, loadMore = false) => {
+    const PAGE_SIZE = 5
+    setLoadingTab(link)
+    
+    setEpisodesMap(prev => {
+      const current = prev[link] || { episodes: [], start: 1, hasMore: true, loading: false }
+      if (current.loading) return prev
+      return { ...prev, [link]: { ...current, loading: true } }
+    })
 
-      const currentData = episodesMap[link] || { episodes: [] }
-      const start = loadMore ? currentData.episodes.length + 1 : 1
-      const end = start + PAGE_SIZE + 1
+    const currentData = episodesRef.current[link] || { episodes: [] }
+    const start = loadMore ? currentData.episodes.length + 1 : 1
+    const end = start + PAGE_SIZE - 1
 
-      try {
-        const res = await fetch(`/api/series/${slug}/${link}?start=${start}&end=${end}`)
-        const data = await res.json()
+    try {
+      const res = await fetch(`/api/series/${slug}/${link}?start=${start}&end=${end}`)
+      const data = await res.json()
 
-        setEpisodesMap((prev) => {
-          const existing = prev[link]?.episodes || []
-          const newEpisodes = loadMore
-            ? [...existing, ...data.eps]
-            : data.eps
-          return {
-            ...prev,
-            [link]: {
-              episodes: newEpisodes,
-              start: newEpisodes.length,
-              hasMore: newEpisodes.length < data.count,
-              loading: false,
-            },
-          }
-        })
-      } catch (err) {
-        console.error(err)
-        setEpisodesMap((prev) => ({
+      setEpisodesMap(prev => {
+        const existing = prev[link]?.episodes || []
+        const newEpisodes = loadMore ? [...existing, ...data.eps] : data.eps
+        const updated = {
           ...prev,
-          [link]: { ...prev[link], loading: false },
-        }))
-      } finally {
-        setLoadingTab(null)
-      }
-    },
-    [episodesMap],
-  ) // Depend on episodesMap for accurate length
-
-  useEffect(() => {
-    if (!activeTab || episodesMap[activeTab]) return
-    fetchEpisodes(activeTab)
-  }, [activeTab, fetchEpisodes]) // Added fetchEpisodes to deps
-
-  useEffect(() => {
-    if (show?.seasons?.length) {
-      setActiveTab(show.seasons[0].link)
+          [link]: {
+            episodes: newEpisodes,
+            start: newEpisodes.length + 1,
+            hasMore: newEpisodes.length < data.count,
+            loading: false,
+          },
+        }
+        episodesRef.current = updated // Sync ref
+        return updated
+      })
+    } catch (err) {
+      console.error(err)
+      setEpisodesMap(prev => ({
+        ...prev,
+        [link]: { ...prev[link], loading: false },
+      }))
+    } finally {
+      setLoadingTab(null)
     }
-  }, [show])
+  }, [slug]) // Stable deps
 
+  // Sync episodesRef with episodesMap
+  useEffect(() => {
+    episodesRef.current = episodesMap
+  }, [episodesMap])
+
+  // Fetch show data
   useEffect(() => {
     if (!slug) return
     fetchData()
   }, [slug])
+
+  // Set initial tab and fetch episodes
+  useEffect(() => {
+    if (show?.seasons?.length && !activeTab) {
+      const firstLink = show.seasons[0].link
+      setActiveTab(firstLink)
+      fetchEpisodes(firstLink)
+    }
+  }, [show])
 
   useEffect(() => {
     if (listRef.current) {
@@ -118,6 +117,13 @@ export default function Show() {
 
   const copyToClipboard = (url) => {
     navigator.clipboard.writeText(url)
+  }
+
+  const handleTabChange = (newTab) => {
+    setActiveTab(newTab)
+    if (!episodesRef.current[newTab]?.episodes?.length) {
+      fetchEpisodes(newTab)
+    }
   }
 
   const { title, desc, running, genres, seasons } = show
@@ -163,7 +169,7 @@ export default function Show() {
 
               <Tabs
                 value={activeTab}
-                onValueChange={setActiveTab}
+                onValueChange={handleTabChange}
                 className="w-full"
               >
                 <TabsList
@@ -189,9 +195,7 @@ export default function Show() {
                           const tabData = episodesMap[link]
                           const isLoading = loadingTab === link
 
-                          if (!tabData) return null
-
-                          if (isLoading && !tabData.episodes?.length) {
+                          if (isLoading && !tabData?.episodes?.length) {
                             return (
                               <Empty className="w-full bg-background">
                                 <EmptyHeader>
@@ -208,21 +212,18 @@ export default function Show() {
                             )
                           }
 
-                          if (!tabData.episodes?.length && !isLoading) {
+                          if (!tabData?.episodes?.length && !isLoading) {
                             return (
                               <Empty className="w-full bg-background">
                                 <EmptyHeader>
                                   <EmptyMedia variant="icon">
                                     <XCircleIcon />
                                   </EmptyMedia>
-                                  <EmptyTitle>A problem occurred</EmptyTitle>
+                                  <EmptyTitle>No episodes found</EmptyTitle>
+                                  <EmptyDescription>
+                                    We couldn't extract episodes for this season.
+                                  </EmptyDescription>
                                 </EmptyHeader>
-                                <EmptyDescription>
-                                  {" "}
-                                  We couldn't extract the episodes for you{" "}
-                                  <br /> Check your internet connection and try
-                                  again later{" "}
-                                </EmptyDescription>
                               </Empty>
                             )
                           }
@@ -230,7 +231,7 @@ export default function Show() {
                           return tabData.episodes.map(
                             ({ title, desc, mp4, webm }, i) => (
                               <div
-                                key={i}
+                                key={`${link}-${i}`} // Better key using link + index
                                 className="flex flex-col gap-2 p-3 border rounded"
                               >
                                 <span className="font-bold lowercase">
