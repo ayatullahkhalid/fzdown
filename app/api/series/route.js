@@ -5,7 +5,15 @@ export async function GET(req) {
     const scraper = new Scraper()
     const results = await scraper.scrapeSeries()
 
-    return Response.json({ results })
+    return Response.json(
+      { show: result },
+      {
+        headers: {
+          "Cache-Control":
+            "public, s-maxage=86400, max-age=86400, stale-while-revalidate=3600",
+        },
+      },
+    )
   } catch (err) {
     return Response.json({ results: [] }, { status: 500 })
   }

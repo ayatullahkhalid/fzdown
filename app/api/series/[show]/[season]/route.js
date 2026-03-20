@@ -20,7 +20,7 @@ const end = url.searchParams.get("end")
     const result = await scraper.getEpisodes(await scraper.getEpisodeList(season), scraper.baseSeriesURL, start, end)
     const {results, count} = result
     
-    return Response.json({ eps: results , count },{
+    return Response.json({ eps: results , count }, {
   headers: {
     "Cache-Control": "public, s-maxage=31536000, max-age=31536000, stale-while-revalidate=86400",
   },
