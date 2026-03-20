@@ -23,7 +23,7 @@ export default function Show() {
   const slugText = decodeURIComponent(slug)
     .replace("subfolder-", "")
     .replace(".htm", "")
-    .replace("_", "")
+    .replace("_", " ")
   const [show, setShow] = useState({})
   const [loading, setLoading] = useState(false)
   const [activeTab, setActiveTab] = useState("")
@@ -57,6 +57,7 @@ export default function Show() {
           start: 1,
           hasMore: true,
           loading: false,
+          fetched: true,
         }
         if (current.loading) return prev
         return { ...prev, [link]: { ...current, loading: true } }
@@ -84,6 +85,7 @@ export default function Show() {
               start: newEpisodes.length + 1,
               hasMore: newEpisodes.length < data.count,
               loading: false,
+              fetched: true,
             },
           }
           episodesRef.current = updated
@@ -297,20 +299,22 @@ export default function Show() {
                             ),
                           )
                         })()}
-                        {episodesMap[link]?.hasMore && (
-                          <div className="w-full justify-center align-center flex">
-                            <Button
-                              variant="outline"
-                              size="xs"
-                              onClick={() => fetchEpisodes(link, true)}
-                              disabled={episodesMap[link]?.loading}
-                            >
-                              {episodesMap[link]?.loading
-                                ? "Loading..."
-                                : "Load More"}
-                            </Button>
-                          </div>
-                        )}
+                        {episodesMap[link]?.fetched &&
+                          episodesMap[link]?.episodes?.length > 0 &&
+                          episodesMap[link]?.hasMore && (
+                            <div className="w-full justify-center align-center flex">
+                              <Button
+                                variant="outline"
+                                size="xs"
+                                onClick={() => fetchEpisodes(link, true)}
+                                disabled={episodesMap[link]?.loading}
+                              >
+                                {episodesMap[link]?.loading
+                                  ? "Loading..."
+                                  : "Load More"}
+                              </Button>
+                            </div>
+                          )}
                       </CardContent>
                       <Separator />
                     </Card>
