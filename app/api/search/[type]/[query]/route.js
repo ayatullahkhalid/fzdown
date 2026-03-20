@@ -5,9 +5,10 @@ export async function GET(req) {
   const parts = pathname.split("/").filter(Boolean)
   const type = parts[2]
   const query = parts[3]
+  
 
   if (!query) {
-    return Response.json({ results })
+    return Response.json({ results: [], type, query })
   }
 
   try {
@@ -25,6 +26,6 @@ export async function GET(req) {
     )
   } catch (err) {
     console.error(err)
-    return Response.json({ results: [] }, { status: 500 })
+    return Response.json({ results: [], type, query, err.message, err.stack }, { status: 500 })
   }
 }
