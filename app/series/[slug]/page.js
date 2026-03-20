@@ -77,7 +77,7 @@ export default function Show() {
             [link]: {
               episodes: newEpisodes,
               start: newEpisodes.length,
-              hasMore: data.count === PAGE_SIZE,
+              hasMore: data.eps.count === PAGE_SIZE,
               loading: false,
             },
           }
