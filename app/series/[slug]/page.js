@@ -61,7 +61,7 @@ export default function Show() {
 
       const currentData = episodesMap[link] || { episodes: [] }
       const start = loadMore ? currentData.episodes.length : 0
-      const end = start + PAGE_SIZE - 1
+      const end = start + PAGE_SIZE
 
       try {
         const res = await fetch(`/api/series/${slug}/${link}?start=${start}&end=${end}`)
