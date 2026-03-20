@@ -68,16 +68,18 @@ export default function Show() {
       const end = start + PAGE_SIZE - 1
 
       try {
-        const res = await fetch(
-          `/api/series/${slug}/${link}/${start}/${end}`,
-        )
+        const res = await fetch(`/api/series/${slug}/${link}/${start}/${end}`)
         const data = await res.json()
 
         setEpisodesMap((prev) => {
           const existing = prev[link]?.episodes || []
           const results = Array.isArray(data.eps) ? data.eps : []
 
-          const newEpisodes = loadMore ? [...existing, ...results] : results
+          const merged = loadMore ? [...existing, ...results] : results
+
+          const newEpisodes = Array.from(
+            new Map(merged.map((ep) => [ep.mp4?.url || ep.title, ep])).values(),
+          )
           const updated = {
             ...prev,
             [link]: {
