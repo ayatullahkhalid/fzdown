@@ -1,4 +1,5 @@
 import localFont from 'next/font/local'
+import React, { Suspense } from "react"
 import "./globals.css";
 import Menu from "@/components/menu";
 import BreadcrumbMain from '@/components/breadcrumb';
