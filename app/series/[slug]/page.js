@@ -229,7 +229,7 @@ export default function Show() {
                             )
                           }
 
-                          return tabData.episodes.map(
+                          return tabData?.episodes?.map(
                             ({ title, desc, mp4, webm }, i) => (
                               <div
                                 key={`${link}-${i}`} // Better key using link + index
@@ -240,28 +240,28 @@ export default function Show() {
                                 </span>
                                 <span className="lowercase">{desc}</span>
                                 <div className="flex gap-2 flex-wrap items-center">
-                                  <span>mp4 ({mp4.size})</span>
+                                  <span>mp4 ({mp4?.size})</span>
                                   <Button
                                     variant="outline"
                                     size="xs"
-                                    onClick={() => copyToClipboard(mp4.url)}
+                                    onClick={() => copyToClipboard(mp4?.url)}
                                   >
                                     <CopyIcon />
                                   </Button>
                                   <Button asChild variant="outline" size="xs">
-                                    <Link href={mp4.url}>Download</Link>
+                                    <Link href={mp4?.url}>Download</Link>
                                   </Button>
 
-                                  <span>webm ({webm.size})</span>
+                                  <span>webm ({webm?.size})</span>
                                   <Button
                                     variant="outline"
                                     size="xs"
-                                    onClick={() => copyToClipboard(webm.url)}
+                                    onClick={() => copyToClipboard(webm?.url)}
                                   >
                                     <CopyIcon />
                                   </Button>
                                   <Button asChild variant="outline" size="xs">
-                                    <Link href={webm.url}>Download</Link>
+                                    <Link href={webm?.url}>Download</Link>
                                   </Button>
                                 </div>
                               </div>
