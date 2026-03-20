@@ -15,6 +15,7 @@ const formatName = (path) => {
     .replace(/subfolder-|files-/g, "")
     .replace(/\.htm$/i, "")
     .replace(/-/g, " ")
+    .replace("_", " ")
     .trim()
     .toLowerCase()
 }
