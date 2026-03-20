@@ -1,11 +1,13 @@
 import Scraper from "@/lib/scraper"
 
-export async function GET(req, { params }) {
-  const { type, query } = params
-  console.log(params)
+export async function GET(req) {
+  const pathname = new URL(req.url).pathname
+  const parts = pathname.split("/").filter(Boolean)
+  const type = parts[2]
+  const query = parts[3]
 
   if (!query) {
-    return Response.json({ params })
+    return Response.json({ results })
   }
 
   try {
