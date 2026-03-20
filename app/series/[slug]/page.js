@@ -44,7 +44,6 @@ export default function Show() {
     }
   }
 
-  // Memoized fetchEpisodes to avoid recreating on every render
   const fetchEpisodes = useCallback(
     async (link, loadMore = false) => {
       const PAGE_SIZE = 5
@@ -52,7 +51,7 @@ export default function Show() {
       setEpisodesMap((prev) => {
         const current = prev[link] || {
           episodes: [],
-          start: 0,
+          start: 1,
           hasMore: true,
           loading: false,
         }
@@ -60,8 +59,8 @@ export default function Show() {
       })
 
       const currentData = episodesMap[link] || { episodes: [] }
-      const start = loadMore ? currentData.episodes.length : 0
-      const end = start + PAGE_SIZE
+      const start = loadMore ? currentData.episodes.length + 1 : 1
+      const end = start + PAGE_SIZE + 1
 
       try {
         const res = await fetch(`/api/series/${slug}/${link}?start=${start}&end=${end}`)
@@ -77,7 +76,7 @@ export default function Show() {
             [link]: {
               episodes: newEpisodes,
               start: newEpisodes.length,
-              hasMore: data.count === PAGE_SIZE,
+              hasMore: newEpisodes.length < data.count,
               loading: false,
             },
           }
