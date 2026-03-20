@@ -30,7 +30,9 @@ export default function RootLayout({ children }) {
         className={`${myfont.className} text-xs antialiased dark`}
       >
         <Menu />
-        <BreadcrumbMain />
+        <Suspense fallback={null}>
+  <BreadcrumbMain />
+</Suspense>
         {children}
         
       </body>
