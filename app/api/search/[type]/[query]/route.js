@@ -26,6 +26,6 @@ export async function GET(req) {
     )
   } catch (err) {
     console.error(err)
-    return Response.json({ results: [], type, query, err.message, err.stack }, { status: 500 })
+    return Response.json({ results: [], type, query, error: err.message, stack: err.stack }, { status: 500 })
   }
 }
