@@ -31,7 +31,7 @@ export default function Show() {
   const [loadingTab, setLoadingTab] = useState(null)
 
   const listRef = useRef(null)
-  const episodesRef = useRef({}) // Track current episodesMap
+  const episodesRef = useRef({})
 
   const fetchData = async () => {
     try {
@@ -70,12 +70,11 @@ export default function Show() {
         const res = await fetch(
           `/api/series/${slug}/${link}?start=${start}&end=${end}`,
         )
-        console.log(`/api/series/${slug}/${link}?start=${start}&end=${end}`)
         const data = await res.json()
 
         setEpisodesMap((prev) => {
           const existing = prev[link]?.episodes || []
-          const results = Array.isArray(data.results) ? data.results : []
+          const results = Array.isArray(data.eps) ? data.eps : []
 
           const newEpisodes = loadMore ? [...existing, ...results] : results
           const updated = {
@@ -87,7 +86,7 @@ export default function Show() {
               loading: false,
             },
           }
-          episodesRef.current = updated // Sync ref
+          episodesRef.current = updated
           return updated
         })
       } catch (err) {
@@ -101,20 +100,16 @@ export default function Show() {
       }
     },
     [slug],
-  ) // Stable deps
-
-  // Sync episodesRef with episodesMap
+  )
   useEffect(() => {
     episodesRef.current = episodesMap
   }, [episodesMap])
 
-  // Fetch show data
   useEffect(() => {
     if (!slug) return
     fetchData()
   }, [slug])
 
-  // Set initial tab and fetch episodes
   useEffect(() => {
     if (show?.seasons?.length && !activeTab) {
       const firstLink = show.seasons[0].link
@@ -246,7 +241,7 @@ export default function Show() {
                           return tabData?.episodes?.map(
                             ({ title, desc, mp4, webm }, i) => (
                               <div
-                                key={`${link}-${i}`} // Better key using link + index
+                                key={`${link}-${i}`}
                                 className="flex flex-col gap-2 p-3 border rounded"
                               >
                                 <span className="font-bold lowercase">
