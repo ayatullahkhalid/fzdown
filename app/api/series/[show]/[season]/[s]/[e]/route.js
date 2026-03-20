@@ -8,8 +8,8 @@ const parts = pathname.split("/").filter(Boolean)
 
 const season = parts[3]
 
-const start = url.searchParams.get("start")
-const end = url.searchParams.get("end")
+const start = parts[4]
+const end = parts[5]
   
   if (!season) {
     return Response.json({ eps: null })

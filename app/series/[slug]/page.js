@@ -69,7 +69,7 @@ export default function Show() {
 
       try {
         const res = await fetch(
-          `/api/series/${slug}/${link}?start=${start}&end=${end}`,
+          `/api/series/${slug}/${link}/${start}/${end}`,
         )
         const data = await res.json()
 
