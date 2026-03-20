@@ -18,8 +18,9 @@ const end = url.searchParams.get("end")
   try {
     const scraper = new Scraper()
     const result = await scraper.getEpisodes(await scraper.getEpisodeList(season), scraper.baseSeriesURL, start, end)
+    const {eps, count} = result
     
-    return Response.json({ eps : result })
+    return Response.json({ eps, count })
   } catch (err) {
     return Response.json({ message: err.message, stack: err.stack, url: season}, { status: 500 })
   }
