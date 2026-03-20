@@ -6,7 +6,7 @@ export async function GET(req) {
     const results = await scraper.scrapeSeries()
 
     return Response.json(
-      { show: result },
+      { results },
       {
         headers: {
           "Cache-Control":
