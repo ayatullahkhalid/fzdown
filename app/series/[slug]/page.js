@@ -70,14 +70,14 @@ export default function Show() {
         setEpisodesMap((prev) => {
           const existing = prev[link]?.episodes || []
           const newEpisodes = loadMore
-            ? [...existing, ...data.episodes]
-            : data.episodes
+            ? [...existing, ...data.eps]
+            : data.eps
           return {
             ...prev,
             [link]: {
               episodes: newEpisodes,
               start: newEpisodes.length,
-              hasMore: data.episodes.length === PAGE_SIZE,
+              hasMore: data.eps.length === PAGE_SIZE,
               loading: false,
             },
           }
