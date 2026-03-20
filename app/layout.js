@@ -1,5 +1,4 @@
 import localFont from 'next/font/local'
-import React, { Suspense } from "react"
 import "./globals.css";
 import Menu from "@/components/menu";
 import BreadcrumbMain from '@/components/breadcrumb';
@@ -31,9 +30,7 @@ export default function RootLayout({ children }) {
         className={`${myfont.className} text-xs antialiased dark`}
       >
         <Menu />
-        <Suspense fallback={null}>
-  <BreadcrumbMain />
-</Suspense>
+        <BreadcrumbMain />
         {children}
         
       </body>
