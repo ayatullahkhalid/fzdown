@@ -46,7 +46,9 @@ export default function Series() {
               </>
             }
           >
-            <MediaList results={results} />
+            {({ title, desc, link, type }) => (
+              <MediaList title={title} desc={desc} link={link} type={type} />
+            )}
           </MediaState>
         </div>
       </div>

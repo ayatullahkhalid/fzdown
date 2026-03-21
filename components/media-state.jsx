@@ -24,8 +24,10 @@ export default function MediaState({
         <div className="text-sm pl-2 pb-4">
           Latest {type === "series" ? "shows" : "movies"}
         </div>
-        {results.map(({ title, desc, link, type }, i) => (
-          <React.Fragment key={link || i}>{children}</React.Fragment>
+        {results.map(({title, desc, link, type}, i) => (
+          <React.Fragment key={link || i}>
+            {typeof children === "function" ? children({title, desc, link, type}) : children}
+          </React.Fragment>
         ))}
       </div>
     </div>
