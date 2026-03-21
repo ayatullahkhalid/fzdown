@@ -2,8 +2,8 @@
 import React from "react"
 import SearchBar from "@/components/search"
 import { useEffect, useState } from "react"
-import { MediaState } from "@/components/media-state"
-import { MediaList } from "@/components/media-list"
+import MediaState from "@/components/media-state"
+import MediaList from "@/components/media-list"
 import Link from "next/link"
 
 export default function Series() {

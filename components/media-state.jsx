@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { EmptyState } from "./empty-state"
+import  EmptyState from "./empty-state"
 import { Spinner } from "@/components/ui/spinner"
 import { XCircleIcon } from "@phosphor-icons/react"
 
