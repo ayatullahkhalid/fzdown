@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group"
 import { MagnifyingGlassIcon } from "@phosphor-icons/react"
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
+import MediaState from "./media-state"
+import MediaList from "./media-list"
 
 const SearchBar = () => {
   const path = usePathname()
