@@ -12,7 +12,7 @@ import React from "react"
 
 const formatName = (path) => {
   return decodeURIComponent(path)
-    .replace(/subfolder-|files-/g, "")
+    .replace(/subfolder-|movie-|hmp4-|files-/g, "")
     .replace(/\.htm$/i, "")
     .replace(/-/g, " ")
     .replace("_", " ")

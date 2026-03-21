@@ -36,7 +36,7 @@ export default function Series() {
             loading={loading}
             results={results}
             type="series"
-            loadingTitle="Loading Series"
+            loadingTitle="Loading Shows"
             loadingDesc={`We'll get them for you in a jiffy`}
             errorTitle="A problem occurred"
             errorDesc={
