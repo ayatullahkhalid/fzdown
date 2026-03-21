@@ -1,19 +1,9 @@
- "use client"
+"use client"
 import React from "react"
 import SearchBar from "@/components/search"
 import { useEffect, useState } from "react"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
-import Link from "next/link"
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty"
-import { Spinner } from "@/components/ui/spinner"
-import { XCircleIcon } from "@phosphor-icons/react"
+import MediaState from "@/components/media-state"
+import MediaList from "@/components/media-list"
 
 export default function Movies() {
   const [results, setResults] = useState([])
