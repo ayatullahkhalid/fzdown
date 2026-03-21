@@ -1,18 +1,20 @@
 import Scraper from "@/lib/scraper"
 
 export async function GET(req) {
-  const { searchParams } = new URL(req.url)
+  const url = new URL(req.url)
 
-  const query = searchParams.get("q")
-  const type = searchParams.get("type") || "series"
+const pathname = url.pathname
+const parts = pathname.split("/").filter(Boolean)
 
-  if (!query) {
+const movie = parts[2]
+
+  if (!movie) {
     return Response.json({ results: [] })
   }
 
   try {
     const scraper = new Scraper()
-    const results = await scraper.search(query, type)
+    const results = await scraper.getMovie(movie)
 
     return Response.json(
       { results },
@@ -24,7 +26,6 @@ export async function GET(req) {
       },
     )
   } catch (err) {
-    console.error(err)
     return Response.json({ results: [] }, { status: 500 })
   }
 }
