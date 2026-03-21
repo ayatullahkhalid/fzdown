@@ -25,7 +25,7 @@ export default function MediaState({
           Latest {type === "series" ? "shows" : "movies"}
         </div>
         {results.map(({ title, desc, link, type }, i) => (
-          <React.Fragment key={link || i}>children</React.Fragment>
+          <React.Fragment key={link || i}>{children}</React.Fragment>
         ))}
       </div>
     </div>
