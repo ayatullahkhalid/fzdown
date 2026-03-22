@@ -22,7 +22,7 @@ const end = parts[5]
     
     return Response.json({ eps: results , count }, {
   headers: {
-    "Cache-Control": "public, s-maxage=31536000, max-age=31536000, stale-while-revalidate=86400",
+    "Cache-Control": "public, s-maxage=36000, max-age=36000, stale-while-revalidate=3600",
   },
 })
   } catch (err) {
