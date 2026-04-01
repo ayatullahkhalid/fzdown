@@ -108,7 +108,6 @@ const SearchBar = () => {
               <MediaList title={title} desc={desc} link={link} type={type} />
             )}
           </MediaState>
-          )
         </div>
       )}
     </div>
