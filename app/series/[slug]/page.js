@@ -105,6 +105,7 @@ export default function Show() {
     },
     [slug],
   );
+  
   useEffect(() => {
     episodesRef.current = episodesMap;
   }, [episodesMap]);
@@ -129,14 +130,6 @@ export default function Show() {
       scrollToActiveTab();
     });
   }, [activeTab]);
-
-  useEffect(() => {
-    if (seasons?.length) {
-      requestAnimationFrame(() => {
-        scrollToActiveTab();
-      });
-    }
-  }, [seasons]);
 
   const copyToClipboard = (url) => {
     navigator.clipboard.writeText(url);
