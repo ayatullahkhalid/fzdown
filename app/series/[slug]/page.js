@@ -1,55 +1,55 @@
-"use client"
-import React, { useEffect, useState, useRef, useCallback } from "react"
-import { usePathname } from "next/navigation"
-import SearchBar from "@/components/search"
-import { Separator } from "@/components/ui/separator"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+"use client";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import { usePathname } from "next/navigation";
+import SearchBar from "@/components/search";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   Empty,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty"
-import { Spinner } from "@/components/ui/spinner"
-import { XCircleIcon, CopyIcon } from "@phosphor-icons/react"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+} from "@/components/ui/empty";
+import { Spinner } from "@/components/ui/spinner";
+import { XCircleIcon, CopyIcon } from "@phosphor-icons/react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Show() {
-  const pathname = usePathname()
-  const slug = pathname.replace(/^\/series\//, "")
+  const pathname = usePathname();
+  const slug = pathname.replace(/^\/series\//, "");
   const slugText = decodeURIComponent(slug)
     .replace("subfolder-", "")
     .replace(".htm", "")
-    .replace("_", " ")
-  const [show, setShow] = useState({})
-  const [loading, setLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState("")
-  const [episodesMap, setEpisodesMap] = useState({})
-  const [loadingTab, setLoadingTab] = useState(null)
+    .replace("_", " ");
+  const [show, setShow] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("");
+  const [episodesMap, setEpisodesMap] = useState({});
+  const [loadingTab, setLoadingTab] = useState(null);
 
-  const listRef = useRef(null)
-  const episodesRef = useRef({})
+  const listRef = useRef(null);
+  const episodesRef = useRef({});
 
   const fetchData = async () => {
     try {
-      setLoading(true)
-      const res = await fetch(`/api/series/${slug}`)
-      const data = await res.json()
-      setShow(data.show || {})
+      setLoading(true);
+      const res = await fetch(`/api/series/${slug}`);
+      const data = await res.json();
+      setShow(data.show || {});
     } catch (err) {
-      setShow({})
+      setShow({});
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const fetchEpisodes = useCallback(
     async (link, loadMore = false) => {
-      const PAGE_SIZE = 5
-      setLoadingTab(link)
+      const PAGE_SIZE = 5;
+      setLoadingTab(link);
 
       setEpisodesMap((prev) => {
         const current = prev[link] || {
@@ -58,28 +58,28 @@ export default function Show() {
           hasMore: true,
           loading: false,
           fetched: true,
-        }
-        if (current.loading) return prev
-        return { ...prev, [link]: { ...current, loading: true } }
-      })
+        };
+        if (current.loading) return prev;
+        return { ...prev, [link]: { ...current, loading: true } };
+      });
 
-      const currentData = episodesRef.current[link] || { episodes: [] }
-      const start = loadMore ? currentData.episodes.length + 1 : 1
-      const end = start + PAGE_SIZE - 1
+      const currentData = episodesRef.current[link] || { episodes: [] };
+      const start = loadMore ? currentData.episodes.length + 1 : 1;
+      const end = start + PAGE_SIZE - 1;
 
       try {
-        const res = await fetch(`/api/series/${slug}/${link}/${start}/${end}`)
-        const data = await res.json()
+        const res = await fetch(`/api/series/${slug}/${link}/${start}/${end}`);
+        const data = await res.json();
 
         setEpisodesMap((prev) => {
-          const existing = prev[link]?.episodes || []
-          const results = Array.isArray(data.eps) ? data.eps : []
+          const existing = prev[link]?.episodes || [];
+          const results = Array.isArray(data.eps) ? data.eps : [];
 
-          const merged = loadMore ? [...existing, ...results] : results
+          const merged = loadMore ? [...existing, ...results] : results;
 
           const newEpisodes = Array.from(
             new Map(merged.map((ep) => [ep.mp4?.url || ep.title, ep])).values(),
-          )
+          );
           const updated = {
             ...prev,
             [link]: {
@@ -89,57 +89,77 @@ export default function Show() {
               loading: false,
               fetched: true,
             },
-          }
-          episodesRef.current = updated
-          return updated
-        })
+          };
+          episodesRef.current = updated;
+          return updated;
+        });
       } catch (err) {
-        console.error(err)
+        console.error(err);
         setEpisodesMap((prev) => ({
           ...prev,
           [link]: { ...prev[link], loading: false },
-        }))
+        }));
       } finally {
-        setLoadingTab(null)
+        setLoadingTab(null);
       }
     },
     [slug],
-  )
+  );
   useEffect(() => {
-    episodesRef.current = episodesMap
-  }, [episodesMap])
+    episodesRef.current = episodesMap;
+  }, [episodesMap]);
 
   useEffect(() => {
-    if (!slug) return
-    fetchData()
-  }, [slug])
+    if (!slug) return;
+    fetchData();
+  }, [slug]);
 
   useEffect(() => {
     if (show?.seasons?.length && !activeTab) {
-      const firstLink = show.seasons[0].link
-      setActiveTab(firstLink)
-      fetchEpisodes(firstLink)
+      const firstLink = show.seasons[0].link;
+      setActiveTab(firstLink);
+      fetchEpisodes(firstLink);
     }
-  }, [show])
+  }, [show]);
 
   useEffect(() => {
-    if (listRef.current) {
-      listRef.current.scrollLeft = 0
+    if (!activeTab) return;
+
+    requestAnimationFrame(() => {
+      scrollToActiveTab();
+    });
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (seasons?.length) {
+      requestAnimationFrame(() => {
+        scrollToActiveTab();
+      });
     }
-  }, [])
+  }, [seasons]);
 
   const copyToClipboard = (url) => {
-    navigator.clipboard.writeText(url)
-  }
+    navigator.clipboard.writeText(url);
+  };
+
+  const scrollToActiveTab = () => {
+    const activeEl = listRef.current?.querySelector('[data-state="active"]');
+    if (activeEl && listRef.current) {
+      listRef.current.scrollTo({
+        left: activeEl.offsetLeft,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const handleTabChange = (newTab) => {
-    setActiveTab(newTab)
+    setActiveTab(newTab);
     if (!episodesRef.current[newTab]?.episodes?.length) {
-      fetchEpisodes(newTab)
+      fetchEpisodes(newTab);
     }
-  }
+  };
 
-  const { title, desc, running, genres, seasons } = show
+  const { title, desc, running, genres, seasons } = show;
 
   return (
     <div className="cnt">
@@ -187,7 +207,7 @@ export default function Show() {
               >
                 <TabsList
                   ref={listRef}
-                  className="w-full overflow-x-auto overflow-y-hidden no-scrollbar"
+                  className="flex w-full overflow-x-auto overflow-y-hidden no-scrollbar"
                   variant="line"
                 >
                   {seasons?.map(({ title: seasonTitle, link }) => (
@@ -205,8 +225,8 @@ export default function Show() {
                     <Card className="px-2">
                       <CardContent className="flex flex-col gap-2 p-4">
                         {(() => {
-                          const tabData = episodesMap[link]
-                          const isLoading = loadingTab === link
+                          const tabData = episodesMap[link];
+                          const isLoading = loadingTab === link;
 
                           if (isLoading && !tabData?.episodes?.length) {
                             return (
@@ -222,7 +242,7 @@ export default function Show() {
                                   </EmptyDescription>
                                 </EmptyHeader>
                               </Empty>
-                            )
+                            );
                           }
 
                           if (!tabData?.episodes?.length && !isLoading) {
@@ -239,7 +259,7 @@ export default function Show() {
                                   </EmptyDescription>
                                 </EmptyHeader>
                               </Empty>
-                            )
+                            );
                           }
 
                           return tabData?.episodes?.map(
@@ -299,7 +319,7 @@ export default function Show() {
                                 </div>
                               </div>
                             ),
-                          )
+                          );
                         })()}
                         {episodesMap[link]?.fetched &&
                           episodesMap[link]?.episodes?.length > 0 &&
@@ -328,5 +348,5 @@ export default function Show() {
         </div>
       </div>
     </div>
-  )
+  );
 }
