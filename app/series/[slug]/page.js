@@ -196,7 +196,7 @@ export default function Show() {
               <Tabs
                 value={activeTab}
                 onValueChange={handleTabChange}
-                className="w-full max-w-full
+                className="w-full max-w-full"
               >
                 <TabsList
                   ref={listRef}
