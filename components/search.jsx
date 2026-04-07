@@ -52,6 +52,7 @@ const SearchBar = () => {
 
   useEffect(() => {
     if (!debQuery) return
+    debQuery.replace(/\s+/g, "+")
 
     const fetchData = async () => {
       try {
