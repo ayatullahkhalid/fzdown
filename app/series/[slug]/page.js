@@ -196,12 +196,11 @@ export default function Show() {
               <Tabs
                 value={activeTab}
                 onValueChange={handleTabChange}
-                className="w-full"
+                className="w-full max-w-full"
               >
                 <TabsList
                   ref={listRef}
-                  className="flex w-full overflow-x-auto overflow-y-hidden
-                  no-scrollbar min-w"
+                  className="flex w-full overflow-x-auto overflow-y-hidden no-scrollbar min-w-max"
                  // variant="line"
                 >
                   {seasons?.map(({ title: seasonTitle, link }) => (
